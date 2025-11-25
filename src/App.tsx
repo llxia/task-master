@@ -2,7 +2,8 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { CheckboxList } from "./features/CheckboxList";
-import { InputTask } from "./features/InputTask";
+import { InputForm } from "./features/InputForm";
+import { TaskTable } from "./features/TaskTable";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
       </div>
       <h1>L & J Task Master</h1>
       <div className="card">
-        <InputTask />
+        <InputForm />
+        <TaskTable />
         <CheckboxList />
       </div>
       <p className="read-the-docs">

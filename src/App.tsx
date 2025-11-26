@@ -5,19 +5,17 @@ import { InputForm } from "./features/InputForm";
 import { TaskTable } from "./features/TaskTable";
 import { useState } from "react";
 
-export interface Todo {
-  name: string;
-  jp: true
+export interface Task {
+  title: string,
+  description: string,
+  dueDate: Date,
+  priority: string,
+  isCompleted: boolean,
 }
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([])
-  // window.addEventListener("storage", () => {
-  //   // When local storage changes, dump the list to
-  //   // the console.
-  //   const items = JSON.parse(localStorage.getItem("items") ?? '[]');
-  //   setTodos(items)
-  // });
+  const [tasks, setTasks] = useState<Task[]>([]);
+
   return (
     <>
       <div>
@@ -30,10 +28,10 @@ function App() {
       </div>
       <h1>L&J Task Master</h1>
       <div className="card">
-        <InputForm addTodo={(todo) => {
-          setTodos([...todos, todo])
+        <InputForm addTask={(newTask) => {
+          setTasks([...tasks, newTask])
         }} />
-        <TaskTable todos={todos} />
+        <TaskTable tasks={tasks} />
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more

@@ -2,37 +2,25 @@ import * as React from "react";
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { DatePicker } from '@mui/x-date-pickers';
-import { DatePickerValue } from "../components/DatePickerValue"
-import dayjs, { Dayjs } from "dayjs";
-import type { Todo } from "../App";
-
+import dayjs from "dayjs";
+import { useState } from "react";
+import type { Task } from "../App";
 
 export interface InputFormProps {
-  addTodo: (todo: Todo) => void
+  addTask: (newTask: Task) => void
 }
 
 export function InputForm(props: InputFormProps) {
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [dueDate, setDueDate] = React.useState<Dayjs | null>(null);
-  const [priority, setPriority] = React.useState("");
-  const [isCompleted, setIsCompleted] = React.useState(false);
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setChecked(event.target.checked);
-  // };
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [dueDate, setDueDate] = useState<Date>(new Date());
+  const [priority, setPriority] = useState("");
+  const [isCompleted, setIsCompleted] = useState(false);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    // Add your form submission logic here
-    //localStorage.clear();
-    // const id = Math.random().toString(16).slice(2);
-    const items = JSON.parse(localStorage.getItem("items") ?? '[]');
-    // if (!Array.isArray(items)) {
-    //   items = [];
-    // }
-    items.push({ title, description, dueDate, priority, isCompleted });
-    console.log("setItem", items);
-    localStorage.setItem("items", JSON.stringify(items));
-    props.addTodo({ name: title })
+    props.addTask({ title, description, dueDate, priority, isCompleted });
+
   };
 
   return (
@@ -57,11 +45,10 @@ export function InputForm(props: InputFormProps) {
         <div style={{ padding: "10px" }}>
           <DatePicker
             label="Due Date"
-            value={dueDate}
-            onChange={(value) => setDueDate(dayjs(value))}
+            value={dayjs(dueDate)}
+            onChange={(value) => setDueDate(dayjs(value).toDate())}
           />
         </div>
-        <DatePickerValue />
         <TextField
           id="outlined-helperText"
           label="Priority"

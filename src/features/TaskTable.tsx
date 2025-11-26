@@ -1,9 +1,12 @@
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import type { Todo } from "../App";
+import type { Task } from "../App";
+
+export interface TaskTableProps {
+  tasks: Task[]
+}
 
 const columns: GridColDef[] = [
-  // { field: "id", headerName: "ID", width: 50, type: "number" },
   { field: "title", headerName: "Title", width: 130, type: "string" },
   {
     field: "description",
@@ -19,13 +22,10 @@ const columns: GridColDef[] = [
 
 const paginationModel = { page: 0, pageSize: 5 };
 
-export interface TaskTableProps {
-  todos: Todo[]
-}
+
 export function TaskTable(props: TaskTableProps) {
-  const items = JSON.parse(localStorage.getItem("items") || "[]");
-  console.log("getItem", items);
-  if (!items) return;
+  const tasks = props.tasks;
+  if (!tasks) return;
 
   return (
     <Paper sx={{ height: 400, width: "100%" }}>
@@ -33,7 +33,7 @@ export function TaskTable(props: TaskTableProps) {
         getRowId={() => {
           return Math.random();
         }}
-        rows={props.todos}
+        rows={tasks}
         columns={columns}
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10]}

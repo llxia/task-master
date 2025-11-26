@@ -3,7 +3,7 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import { InputForm } from "./features/InputForm";
 import { TaskTable } from "./features/TaskTable";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export interface Task {
   title: string,
@@ -14,7 +14,24 @@ export interface Task {
 }
 
 function App() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const saved = localStorage.getItem("tasks");
+    console.log("useState", saved);
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    console.log("useEffect", tasks);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  useEffect(() => {
+    window.addEventListener("storage", () => {
+      const saved = JSON.parse(window.localStorage.getItem("tasks") ?? "[]");
+      console.log("useEffect", saved);
+      setTasks(saved);
+    });
+  }, [])
 
   return (
     <>
@@ -29,7 +46,7 @@ function App() {
       <h1>L&J Task Master</h1>
       <div className="card">
         <InputForm addTask={(newTask) => {
-          setTasks([...tasks, newTask])
+          setTasks([...tasks, newTask]);
         }} />
         <TaskTable tasks={tasks} />
       </div>

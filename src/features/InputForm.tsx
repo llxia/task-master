@@ -1,44 +1,92 @@
-import Box from "@mui/material/Box";
+import * as React from "react";
+import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
-//import { DatePickerValue } from "../components/DatePickerValue";
+import { DatePicker } from '@mui/x-date-pickers';
+import { DatePickerValue } from "../components/DatePickerValue"
+import dayjs, { Dayjs } from "dayjs";
+import type { Todo } from "../App";
 
-export function InputForm() {
+
+export interface InputFormProps {
+  addTodo: (todo: Todo) => void
+}
+
+export function InputForm(props: InputFormProps) {
+  const [title, setTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [dueDate, setDueDate] = React.useState<Dayjs | null>(null);
+  const [priority, setPriority] = React.useState("");
+  const [isCompleted, setIsCompleted] = React.useState(false);
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setChecked(event.target.checked);
+  // };
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    // Add your form submission logic here
+    //localStorage.clear();
+    // const id = Math.random().toString(16).slice(2);
+    const items = JSON.parse(localStorage.getItem("items") ?? '[]');
+    // if (!Array.isArray(items)) {
+    //   items = [];
+    // }
+    items.push({ title, description, dueDate, priority, isCompleted });
+    console.log("setItem", items);
+    localStorage.setItem("items", JSON.stringify(items));
+    props.addTodo({ name: title })
+  };
+
   return (
-    <Box
-      component="form"
-      sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
-      noValidate
-      autoComplete="off"
-    >
+    <form>
       <div>
         <TextField
           required
           id="outlined-required"
           label="Title"
-          defaultValue=""
+          value={title}
+          style={{ padding: "10px" }}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <TextField
           id="outlined-helperText"
           label="Description"
-          defaultValue=""
+          value={description}
+          style={{ padding: "10px" }}
+          onChange={(e) => setDescription(e.target.value)}
         />
+
+        <div style={{ padding: "10px" }}>
+          <DatePicker
+            label="Due Date"
+            value={dueDate}
+            onChange={(value) => setDueDate(dayjs(value))}
+          />
+        </div>
+        <DatePickerValue />
         <TextField
-          id="outlined-required"
-          label="Due Date"
-          defaultValue="YYYY-MM-DD"
-        />
-        <TextField
-          required
-          id="outlined-required"
+          id="outlined-helperText"
           label="Priority"
-          defaultValue=""
+          value={priority}
+          style={{ padding: "10px" }}
+          onChange={(e) => setPriority(e.target.value)}
         />
+
         <TextField
           id="outlined-required"
           label="Completed"
-          defaultValue="false"
+          value={(isCompleted)}
+          style={{ padding: "10px" }}
+          onChange={(e) => setIsCompleted(e.target.value === "true")}
         />
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          style={{ marginTop: "10px" }}
+          onClick={handleClick}
+        >
+          Add
+        </Button>
       </div>
-    </Box>
+    </form>
   );
 }

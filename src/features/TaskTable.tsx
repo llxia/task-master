@@ -14,7 +14,11 @@ const columns: GridColDef[] = [
     width: 130,
     type: "string",
   },
-  { field: "dueDate", headerName: "Due Date", width: 130, type: "string" },
+  {
+    field: "dueDate", headerName: "Due Date", width: 130, type: "string", renderCell: (params) => {
+      return new Date(params.row.dueDate).toDateString();
+    }
+  },
   { field: "priority", headerName: "Priority", width: 130, type: "string" },
   { field: "isCompleted", headerName: "Completed", width: 130, type: "boolean" },
 ];

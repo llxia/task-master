@@ -1,10 +1,12 @@
 import * as React from "react";
-import { Button } from "@mui/material";
+import { Button, FormControlLabel } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from "dayjs";
 import { useState } from "react";
 import type { Task } from "../App";
+import Checkbox from '@mui/material/Checkbox';
+import { SelectTextFields } from "../components/SelectTextFields";
 
 export interface InputFormProps {
   addTask: (newTask: Task) => void
@@ -14,13 +16,12 @@ export function InputForm(props: InputFormProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState<Date>(new Date());
-  const [priority, setPriority] = useState("");
+  const [priority, setPriority] = useState("High");
   const [isCompleted, setIsCompleted] = useState(false);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     props.addTask({ title, description, dueDate, priority, isCompleted });
-
   };
 
   return (
@@ -41,7 +42,6 @@ export function InputForm(props: InputFormProps) {
           style={{ padding: "10px" }}
           onChange={(e) => setDescription(e.target.value)}
         />
-
         <div style={{ padding: "10px" }}>
           <DatePicker
             label="Due Date"
@@ -49,21 +49,21 @@ export function InputForm(props: InputFormProps) {
             onChange={(value) => setDueDate(dayjs(value).toDate())}
           />
         </div>
-        <TextField
-          id="outlined-helperText"
-          label="Priority"
-          value={priority}
-          style={{ padding: "10px" }}
-          onChange={(e) => setPriority(e.target.value)}
-        />
+        <SelectTextFields
+          priority={priority}
+          label="Select the task priority"
+          selectPriority={(value) => {
+            console.log("value", value);
+            setPriority(value);
+          }} />
+        <FormControlLabel control={<Checkbox
+          checked={isCompleted}
+          onChange={(e) => setIsCompleted(e.target.checked)}
+          slotProps={{
+            input: { 'aria-label': 'controlled' },
+          }}
+        />} label="Completed" />
 
-        <TextField
-          id="outlined-required"
-          label="Completed"
-          value={(isCompleted)}
-          style={{ padding: "10px" }}
-          onChange={(e) => setIsCompleted(e.target.value === "true")}
-        />
         <Button
           variant="contained"
           color="primary"

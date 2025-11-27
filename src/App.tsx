@@ -40,7 +40,7 @@ function App() {
       <h1>L&J Task Master</h1>
       <div className="card">
         <InputForm addTask={(newTask) => {
-          const newTasks = [...tasks, newTask]
+          const newTasks = [...tasks, newTask];
           setTasks(newTasks);
           localStorage.setItem("tasks", JSON.stringify(newTasks));
         }} />

@@ -16,14 +16,8 @@ export interface Task {
 function App() {
   const [tasks, setTasks] = useState<Task[]>(() => {
     const saved = localStorage.getItem("tasks");
-    console.log("useState", saved);
     return saved ? JSON.parse(saved) : [];
   });
-
-  useEffect(() => {
-    console.log("useEffect", tasks);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
 
   useEffect(() => {
     window.addEventListener("storage", () => {
@@ -46,7 +40,9 @@ function App() {
       <h1>L&J Task Master</h1>
       <div className="card">
         <InputForm addTask={(newTask) => {
-          setTasks([...tasks, newTask]);
+          const newTasks = [...tasks, newTask]
+          setTasks(newTasks);
+          localStorage.setItem("tasks", JSON.stringify(newTasks));
         }} />
         <TaskTable tasks={tasks} />
       </div>

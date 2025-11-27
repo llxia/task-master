@@ -7,6 +7,7 @@ export interface TaskTableProps {
 }
 
 const columns: GridColDef[] = [
+  { field: "id", headerName: "ID", width: 50, type: "number" },
   { field: "title", headerName: "Title", width: 130, type: "string" },
   {
     field: "description",
@@ -34,9 +35,6 @@ export function TaskTable(props: TaskTableProps) {
   return (
     <Paper sx={{ height: 400, width: "100%" }}>
       <DataGrid
-        getRowId={() => {
-          return Math.random();
-        }}
         rows={tasks}
         columns={columns}
         initialState={{ pagination: { paginationModel } }}

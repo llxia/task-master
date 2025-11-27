@@ -7,12 +7,14 @@ import { useState } from "react";
 import type { Task } from "../App";
 import Checkbox from '@mui/material/Checkbox';
 import { SelectTextFields } from "../components/SelectTextFields";
+import { v4 as uuidv4 } from 'uuid';
 
 export interface InputFormProps {
   addTask: (newTask: Task) => void
 }
 
 export function InputForm(props: InputFormProps) {
+  const [id, setId] = useState(uuidv4());
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState<Date>(new Date());
@@ -21,7 +23,8 @@ export function InputForm(props: InputFormProps) {
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    props.addTask({ title, description, dueDate, priority, isCompleted });
+    setId(uuidv4());
+    props.addTask({ id, title, description, dueDate, priority, isCompleted });
   };
 
   return (

@@ -6,6 +6,7 @@ import { TaskTable } from "./features/TaskTable";
 import { useState, useEffect } from "react";
 
 export interface Task {
+  id: string;
   title: string,
   description: string,
   dueDate: Date,

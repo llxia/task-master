@@ -14,17 +14,20 @@ export interface InputFormProps {
 }
 
 export function InputForm(props: InputFormProps) {
-  const [id, setId] = useState(uuidv4());
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState<Date>(new Date());
-  const [priority, setPriority] = useState("High");
-  const [isCompleted, setIsCompleted] = useState(false);
+  const [task, setTask] = useState<Task>({
+    id: uuidv4(),
+    title: "",
+    description: "",
+    dueDate: new Date(),
+    priority: "High",
+    isCompleted: false
+  });
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    setId(uuidv4());
-    props.addTask({ id, title, description, dueDate, priority, isCompleted });
+    const newTask = { ...task, id: uuidv4() };
+    setTask({ ...task, id: uuidv4() });
+    props.addTask(newTask);
   };
 
   return (
@@ -34,34 +37,34 @@ export function InputForm(props: InputFormProps) {
           required
           id="outlined-required"
           label="Title"
-          value={title}
+          value={task.title}
           style={{ padding: "10px" }}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => setTask({ ...task, title: e.target.value })}
         />
         <TextField
           id="outlined-helperText"
           label="Description"
-          value={description}
+          value={task.description}
           style={{ padding: "10px" }}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) => setTask({ ...task, description: e.target.value })}
         />
         <div style={{ padding: "10px" }}>
           <DatePicker
             label="Due Date"
-            value={dayjs(dueDate)}
-            onChange={(value) => setDueDate(dayjs(value).toDate())}
+            value={dayjs(task.dueDate)}
+            onChange={(value) => setTask({ ...task, dueDate: dayjs(value).toDate() })}
           />
         </div>
         <SelectTextFields
-          priority={priority}
+          priority={task.priority}
           label="Select the task priority"
           selectPriority={(value) => {
             console.log("value", value);
-            setPriority(value);
+            setTask({ ...task, priority: value });
           }} />
         <FormControlLabel control={<Checkbox
-          checked={isCompleted}
-          onChange={(e) => setIsCompleted(e.target.checked)}
+          checked={task.isCompleted}
+          onChange={(e) => setTask({ ...task, isCompleted: e.target.checked })}
           slotProps={{
             input: { 'aria-label': 'controlled' },
           }}

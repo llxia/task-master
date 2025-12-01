@@ -1,6 +1,7 @@
-import { DataGrid, type GridColDef } from "@mui/x-data-grid";
+import { DataGrid, type GridColDef, type GridRowSelectionModel } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import type { Task } from "../App";
+import { useState } from "react";
 
 export interface TaskTableProps {
   tasks: Task[]
@@ -29,6 +30,9 @@ const paginationModel = { page: 0, pageSize: 5 };
 
 
 export function TaskTable(props: TaskTableProps) {
+  const [rowSelectionModel, setRowSelectionModel] =
+    useState<GridRowSelectionModel>({ type: 'include', ids: new Set() });
+
   const tasks = props.tasks;
   if (!tasks) return;
 
@@ -39,9 +43,13 @@ export function TaskTable(props: TaskTableProps) {
         columns={columns}
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10]}
-        checkboxSelection
         sx={{ border: 0 }}
+        onRowSelectionModelChange={(newRowSelectionModel) => {
+          setRowSelectionModel(newRowSelectionModel);
+        }}
+        rowSelectionModel={rowSelectionModel}
       />
+      <div>value: {rowSelectionModel.ids}</div>
     </Paper>
   );
 }

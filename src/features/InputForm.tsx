@@ -74,10 +74,19 @@ export function InputForm(props: InputFormProps) {
           variant="contained"
           color="primary"
           type="submit"
-          style={{ marginTop: "10px" }}
+          style={{ margin: "10px" }}
           onClick={handleClick}
         >
           Add
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          style={{ margin: "10px" }}
+          onClick={handleClick}
+        >
+          Update
         </Button>
       </div>
     </form>

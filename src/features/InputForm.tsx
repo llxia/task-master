@@ -10,7 +10,8 @@ import { SelectTextFields } from "../components/SelectTextFields";
 import { v4 as uuidv4 } from 'uuid';
 
 export interface InputFormProps {
-  addTask: (newTask: Task) => void
+  addTask: (newTask: Task) => void,
+  selectedTask?: Task,
 }
 
 export function InputForm(props: InputFormProps) {
@@ -25,11 +26,22 @@ export function InputForm(props: InputFormProps) {
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    const newTask = { ...task, id: uuidv4() };
-    setTask({ ...task, id: uuidv4() });
-    props.addTask(newTask);
+    if (props.selectedTask && task.id === props.selectedTask.id) {
+      setTask({ ...task });
+      props.addTask(task);
+    } else {
+      const newTask = { ...task, id: uuidv4() };
+      setTask({ ...task, id: uuidv4() });
+      props.addTask(newTask);
+    }
+
   };
 
+  let { title, description, dueDate, priority, isCompleted } = task;
+  if (props.selectedTask) {
+    // ()
+    ({ title, description, dueDate, priority, isCompleted } = props.selectedTask);
+  }
   return (
     <form>
       <div>
@@ -37,33 +49,33 @@ export function InputForm(props: InputFormProps) {
           required
           id="outlined-required"
           label="Title"
-          value={task.title}
+          value={title}
           style={{ padding: "10px" }}
           onChange={(e) => setTask({ ...task, title: e.target.value })}
         />
         <TextField
           id="outlined-helperText"
           label="Description"
-          value={task.description}
+          value={description}
           style={{ padding: "10px" }}
           onChange={(e) => setTask({ ...task, description: e.target.value })}
         />
         <div style={{ padding: "10px" }}>
           <DatePicker
             label="Due Date"
-            value={dayjs(task.dueDate)}
+            value={dayjs(dueDate)}
             onChange={(value) => setTask({ ...task, dueDate: dayjs(value).toDate() })}
           />
         </div>
         <SelectTextFields
-          priority={task.priority}
+          priority={priority}
           label="Select the task priority"
           selectPriority={(value) => {
             console.log("value", value);
             setTask({ ...task, priority: value });
           }} />
         <FormControlLabel control={<Checkbox
-          checked={task.isCompleted}
+          checked={isCompleted}
           onChange={(e) => setTask({ ...task, isCompleted: e.target.checked })}
           slotProps={{
             input: { 'aria-label': 'controlled' },

@@ -4,7 +4,8 @@ import type { Task } from "../App";
 import { useState } from "react";
 
 export interface TaskTableProps {
-  tasks: Task[]
+  tasks: Task[],
+  setSelectedTaskId: (sid: string) => void
 }
 
 const columns: GridColDef[] = [
@@ -46,6 +47,7 @@ export function TaskTable(props: TaskTableProps) {
         sx={{ border: 0 }}
         onRowSelectionModelChange={(newRowSelectionModel) => {
           setRowSelectionModel(newRowSelectionModel);
+          props.setSelectedTaskId([...newRowSelectionModel.ids][0].toString());
         }}
         rowSelectionModel={rowSelectionModel}
       />

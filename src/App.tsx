@@ -20,6 +20,10 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
+  const [selectedTask, setSelectedTask] = useState<Task>();
+
+
+
   useEffect(() => {
     window.addEventListener("storage", () => {
       const saved = JSON.parse(window.localStorage.getItem("tasks") ?? "[]");
@@ -44,8 +48,14 @@ function App() {
           const newTasks = [...tasks, newTask];
           setTasks(newTasks);
           localStorage.setItem("tasks", JSON.stringify(newTasks));
-        }} />
-        <TaskTable tasks={tasks} />
+        }} selectedTask={selectedTask}
+        />
+        <TaskTable tasks={tasks} setSelectedTaskId={(sid) => (
+          setSelectedTask((tasks.find((t) => {
+            if (t.id === sid)
+              return t;
+          })))
+        )} />
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more

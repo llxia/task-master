@@ -4,6 +4,7 @@ import "./App.css";
 import { InputForm } from "./features/InputForm";
 import { TaskTable } from "./features/TaskTable";
 import { useState, useEffect } from "react";
+import { EdiableTable } from "./features/EdiableTable";
 
 export interface Task {
   id: string;
@@ -60,11 +61,13 @@ function App() {
           }
         }} selectedTask={selectedTask}
         />
+        <EdiableTable />
         <TaskTable tasks={tasks} setSelectedTaskId={(sid) => (
           setSelectedTask((tasks.find((t) => {
             return t.id === sid;
           })))
         )} />
+
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more

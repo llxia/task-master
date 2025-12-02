@@ -20,6 +20,7 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
+
   const [selectedTask, setSelectedTask] = useState<Task>();
 
 
@@ -45,15 +46,23 @@ function App() {
       <h1>L&J Task Master</h1>
       <div className="card">
         <InputForm addTask={(newTask) => {
-          const newTasks = [...tasks, newTask];
-          setTasks(newTasks);
-          localStorage.setItem("tasks", JSON.stringify(newTasks));
+          const found = tasks.find((t) => {
+            return t.id === newTask.id;
+          })
+          if (found) {
+            Object.assign(found, newTask)
+            setTasks([...tasks]);
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+          } else {
+            const newTasks = [...tasks, newTask];
+            setTasks(newTasks);
+            localStorage.setItem("tasks", JSON.stringify(newTasks));
+          }
         }} selectedTask={selectedTask}
         />
         <TaskTable tasks={tasks} setSelectedTaskId={(sid) => (
           setSelectedTask((tasks.find((t) => {
-            if (t.id === sid)
-              return t;
+            return t.id === sid;
           })))
         )} />
       </div>

@@ -33,6 +33,12 @@ import {
     randomId,
     randomArrayItem,
 } from '@mui/x-data-grid-generator';
+import type { Task } from "../App";
+
+export interface TaskTableProps {
+    tasks: Task[],
+    setSelectedTaskId: (sid: string) => void
+}
 
 const roles = ['Market', 'Finance', 'Development'];
 const randomRole = () => {
@@ -174,30 +180,51 @@ function ActionsCell(props: GridRenderCellParams) {
 }
 
 const columns: GridColDef[] = [
-    { field: 'name', headerName: 'Name', width: 180, editable: true },
     {
-        field: 'age',
-        headerName: 'Age',
-        type: 'number',
-        width: 80,
+        field: "id",
+        headerName: "ID",
+        width: 50,
+        type: "number",
         align: 'left',
         headerAlign: 'left',
+        editable: false,
+    },
+    {
+        field: "title",
+        headerName: "Title",
+        width: 130,
+        type: "string",
         editable: true,
     },
     {
-        field: 'joinDate',
-        headerName: 'Join date',
-        type: 'date',
-        width: 180,
-        editable: true,
+        field: "description",
+        headerName: "Description",
+        width: 130,
+        type: "string",
     },
     {
-        field: 'role',
-        headerName: 'Department',
-        width: 220,
+        field: "dueDate",
+        headerName: "Due Date",
+        width: 130,
+        type: "date",
+        editable: true,
+        renderCell: (params) => {
+            return new Date(params.row.dueDate).toDateString();
+        }
+    },
+    {
+        field: "priority", headerName: "Priority",
+        width: 130,
         editable: true,
         type: 'singleSelect',
-        valueOptions: ['Market', 'Finance', 'Development'],
+        valueOptions: ['High', 'Medium', 'Low'],
+    },
+    {
+        field: "isCompleted",
+        headerName: "Completed",
+        width: 130,
+        type: "boolean",
+        editable: true,
     },
     {
         field: 'actions',
@@ -209,9 +236,10 @@ const columns: GridColDef[] = [
     },
 ];
 
-export function EdiableTable() {
+export function EdiableTable(props: TaskTableProps) {
     const [rows, setRows] = React.useState(initialRows);
     const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+
 
     const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
         if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -264,6 +292,8 @@ export function EdiableTable() {
         return updatedRow;
     };
 
+    const tasks = props.tasks;
+    if (!tasks) return;
     return (
         <Box
             sx={{

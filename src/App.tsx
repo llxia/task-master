@@ -61,7 +61,11 @@ function App() {
           }
         }} selectedTask={selectedTask}
         />
-        <EdiableTable />
+        <EdiableTable tasks={tasks} setSelectedTaskId={(sid) => (
+          setSelectedTask((tasks.find((t) => {
+            return t.id === sid;
+          })))
+        )} />
         <TaskTable tasks={tasks} setSelectedTaskId={(sid) => (
           setSelectedTask((tasks.find((t) => {
             return t.id === sid;

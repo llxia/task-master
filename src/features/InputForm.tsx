@@ -23,6 +23,10 @@ export function InputForm(props: InputFormProps) {
     priority: "High",
     isCompleted: false
   });
+  React.useEffect(() => {
+    if (!props.selectedTask) return;
+    setTask(props.selectedTask);
+  }, [props.selectedTask])
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -37,11 +41,7 @@ export function InputForm(props: InputFormProps) {
 
   };
 
-  let { title, description, dueDate, priority, isCompleted } = task;
-  if (props.selectedTask) {
-    // ()
-    ({ title, description, dueDate, priority, isCompleted } = props.selectedTask);
-  }
+  const { title, description, dueDate, priority, isCompleted } = task;
   return (
     <form>
       <div>

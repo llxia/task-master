@@ -201,16 +201,14 @@ const columns: GridColDef[] = [
         headerName: "Description",
         width: 130,
         type: "string",
+        editable: true,
     },
     {
         field: "dueDate",
         headerName: "Due Date",
         width: 130,
-        type: "date",
+        type: "string",
         editable: true,
-        renderCell: (params) => {
-            return new Date(params.row.dueDate).toDateString();
-        }
     },
     {
         field: "priority", headerName: "Priority",
@@ -240,7 +238,10 @@ export function EdiableTable(props: TaskTableProps) {
     const [rows, setRows] = React.useState(initialRows);
     const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
 
-
+    React.useEffect(() => {
+        if (!props.tasks) return;
+        setRows(props.tasks);
+    }, [props.tasks]);
     const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
         if (params.reason === GridRowEditStopReasons.rowFocusOut) {
             event.defaultMuiPrevented = true;
@@ -292,8 +293,6 @@ export function EdiableTable(props: TaskTableProps) {
         return updatedRow;
     };
 
-    const tasks = props.tasks;
-    if (!tasks) return;
     return (
         <Box
             sx={{
@@ -307,6 +306,7 @@ export function EdiableTable(props: TaskTableProps) {
                 },
             }}
         >
+            <div>tasks</div>
             <ActionHandlersContext.Provider value={actionHandlers}>
                 <DataGrid
                     rows={rows}

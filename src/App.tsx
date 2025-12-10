@@ -18,7 +18,10 @@ export interface Task {
 function App() {
   const [tasks, setTasks] = useState<Task[]>(() => {
     const saved = localStorage.getItem("tasks");
-    return saved ? JSON.parse(saved) : [];
+    const t = saved ? JSON.parse(saved) : [];
+    return t.map((task: Record<string, string>) => {
+      return { ...task, dueDate: new Date(task.dueDate) }
+    })
   });
 
 
@@ -30,7 +33,11 @@ function App() {
     window.addEventListener("storage", () => {
       const saved = JSON.parse(window.localStorage.getItem("tasks") ?? "[]");
       console.log("useEffect", saved);
-      setTasks(saved);
+      const tasksWithDates = saved.map((t: Record<string, string>) => ({
+        ...t,
+        dueDate: new Date(t.dueDate),
+      }));
+      setTasks(tasksWithDates);
     });
   }, [])
 
@@ -65,7 +72,9 @@ function App() {
           setSelectedTask((tasks.find((t) => {
             return t.id === sid;
           })))
-        )} />
+        )} onTaskChanged={() => {
+
+        }} />
         <TaskTable tasks={tasks} setSelectedTaskId={(sid) => (
           setSelectedTask((tasks.find((t) => {
             return t.id === sid;

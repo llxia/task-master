@@ -207,7 +207,7 @@ const columns: GridColDef[] = [
         field: "dueDate",
         headerName: "Due Date",
         width: 130,
-        type: "string",
+        type: "date",
         editable: true,
     },
     {
@@ -235,7 +235,8 @@ const columns: GridColDef[] = [
 ];
 
 export function EdiableTable(props: TaskTableProps) {
-    const [rows, setRows] = React.useState(initialRows);
+
+    const [rows, setRows] = React.useState<Task[]>([]);
     const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
 
     React.useEffect(() => {
@@ -261,6 +262,7 @@ export function EdiableTable(props: TaskTableProps) {
                     ...prevRowModesModel,
                     [id]: { mode: GridRowModes.View },
                 }));
+
             },
             handleDeleteClick: (id: GridRowId) => {
                 setRows((prevRows) => prevRows.filter((row) => row.id !== id));

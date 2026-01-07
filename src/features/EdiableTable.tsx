@@ -28,60 +28,14 @@ import {
     GridActionsCellItem,
 } from '@mui/x-data-grid';
 import {
-    randomCreatedDate,
-    randomTraderName,
     randomId,
-    randomArrayItem,
 } from '@mui/x-data-grid-generator';
 import type { Task } from "../App";
 
 export interface TaskTableProps {
     tasks: Task[],
-    setSelectedTaskId: (sid: string) => void
+    onTaskChanged: (t: Task[]) => void
 }
-
-const roles = ['Market', 'Finance', 'Development'];
-const randomRole = () => {
-    return randomArrayItem(roles);
-};
-
-const initialRows: GridRowsProp = [
-    {
-        id: randomId(),
-        name: randomTraderName(),
-        age: 25,
-        joinDate: randomCreatedDate(),
-        role: randomRole(),
-    },
-    {
-        id: randomId(),
-        name: randomTraderName(),
-        age: 36,
-        joinDate: randomCreatedDate(),
-        role: randomRole(),
-    },
-    {
-        id: randomId(),
-        name: randomTraderName(),
-        age: 19,
-        joinDate: randomCreatedDate(),
-        role: randomRole(),
-    },
-    {
-        id: randomId(),
-        name: randomTraderName(),
-        age: 28,
-        joinDate: randomCreatedDate(),
-        role: randomRole(),
-    },
-    {
-        id: randomId(),
-        name: randomTraderName(),
-        age: 23,
-        joinDate: randomCreatedDate(),
-        role: randomRole(),
-    },
-];
 
 declare module '@mui/x-data-grid' {
     interface ToolbarPropsOverrides {
@@ -99,7 +53,7 @@ function EditToolbar(props: GridSlotProps['toolbar']) {
         const id = randomId();
         setRows((oldRows) => [
             ...oldRows,
-            { id, name: '', age: '', role: '', isNew: true },
+            { id, title: '', description: '', dueDate: new Date(), priority: "High", isCompleted: false, isNew: true },
         ]);
         setRowModesModel((oldModel) => ({
             ...oldModel,

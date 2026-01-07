@@ -13,6 +13,7 @@ export interface Task {
   dueDate: Date,
   priority: string,
   isCompleted: boolean,
+  isNew: boolean,
 }
 
 function App() {
@@ -68,12 +69,9 @@ function App() {
           }
         }} selectedTask={selectedTask}
         />
-        <EdiableTable tasks={tasks} setSelectedTaskId={(sid) => (
-          setSelectedTask((tasks.find((t) => {
-            return t.id === sid;
-          })))
-        )} onTaskChanged={() => {
-
+        <EdiableTable tasks={tasks} onTaskChanged={(t: Task[]) => {
+          setTasks(t);
+          localStorage.setItem("tasks", JSON.stringify(t));
         }} />
         <TaskTable tasks={tasks} setSelectedTaskId={(sid) => (
           setSelectedTask((tasks.find((t) => {

@@ -1,23 +1,33 @@
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { Button, Input, Checkbox } from 'antd';
+import { DeleteTwoTone } from '@ant-design/icons';
+import "./todo.css"
 
 function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className='main'>
+        <h1>Task Master</h1>
+        <div className='task-creator'>
+          <Input placeholder="Task to be added" />
+          <Button type="primary">Add</Button>
+        </div>
+        <div className='task-filter'>
+          <Button type="primary">All</Button>
+          <Button type="default">In Progress</Button>
+          <Button type="default">Completed</Button>
+        </div>
+        {['1', '2', '3'].map(item => {
+          return <div className='task'>
+            <Checkbox>{item}</Checkbox>
+            <Button type="default" shape='circle' icon={<DeleteTwoTone />} />
+
+          </div>
+        })}
+        <div className='stats'>
+          Total | In Progress | Completed
+        </div>
       </div>
-      <h1>L&J Task Master</h1>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }

@@ -3,7 +3,7 @@ import { DeleteTwoTone } from "@ant-design/icons";
 import "./todo.css";
 import { useState } from "react";
 import { InputForm } from "./components/InputForm";
-import { TaskFilter } from "./components/TaskFilter";
+import { TaskFilter, type Filter } from "./components/TaskFilter";
 
 interface Task {
   title: string;
@@ -16,7 +16,7 @@ function App() {
     },
   ]);
 
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useState<Filter>("All");
   const filteredTasks = tasks.filter((t) => {
     if (filter === "In Progress") {
       return !t.isCompleted;

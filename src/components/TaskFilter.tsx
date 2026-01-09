@@ -1,9 +1,11 @@
 import { Button } from "antd";
 import type { FC } from "react";
 
-interface TaskFilterProp {
-  filter: string;
-  onFilter: (filter: string) => void;
+export type Filter = "All" | "In Progress" | "Completed";
+
+export interface TaskFilterProp {
+  filter: Filter;
+  onFilter: (filter: Filter) => void;
 }
 
 export const TaskFilter: FC<TaskFilterProp> = ({ filter, onFilter }) => {

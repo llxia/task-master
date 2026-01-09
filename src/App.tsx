@@ -3,6 +3,7 @@ import { DeleteTwoTone } from "@ant-design/icons";
 import "./todo.css";
 import { useState } from "react";
 import { InputForm } from "./components/InputForm";
+import { TaskFilter } from "./components/TaskFilter";
 
 interface Task {
   title: string;
@@ -34,32 +35,13 @@ function App() {
           setTask([...tasks, { title: input, isCompleted: false }]);
         }}
       />
-      <div className="task-filter">
-        <Button
-          type={filter === "All" ? "primary" : "default"}
-          onClick={() => {
-            setFilter("All");
-          }}
-        >
-          All
-        </Button>
-        <Button
-          type={filter === "In Progress" ? "primary" : "default"}
-          onClick={() => {
-            setFilter("In Progress");
-          }}
-        >
-          In Progress
-        </Button>
-        <Button
-          type={filter === "Completed" ? "primary" : "default"}
-          onClick={() => {
-            setFilter("Completed");
-          }}
-        >
-          Completed
-        </Button>
-      </div>
+      <TaskFilter
+        filter={filter}
+        onFilter={(f) => {
+          setFilter(f);
+        }}
+      />
+
       {filteredTasks.map((item) => {
         return (
           <div className="task">

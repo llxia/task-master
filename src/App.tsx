@@ -1,11 +1,10 @@
-import { Button, Checkbox } from "antd";
-import { DeleteTwoTone } from "@ant-design/icons";
 import "./todo.css";
 import { useState } from "react";
 import { InputForm } from "./components/InputForm";
 import { TaskFilter, type Filter } from "./components/TaskFilter";
+import { Tasks } from "./components/Tasks";
 
-interface Task {
+export interface Task {
   title: string;
   isCompleted?: boolean;
 }
@@ -42,35 +41,22 @@ function App() {
         }}
       />
 
-      {filteredTasks.map((item) => {
-        return (
-          <div className="task">
-            <Checkbox
-              checked={item.isCompleted}
-              onChange={(e) => {
-                setTask(
-                  tasks.map((t) => {
-                    if (t === item) {
-                      t.isCompleted = e.target.checked;
-                    }
-                    return t;
-                  }),
-                );
-              }}
-            >
-              {item.title}
-            </Checkbox>
-            <Button
-              type="default"
-              shape="circle"
-              icon={<DeleteTwoTone />}
-              onClick={() => {
-                setTask(tasks.filter((t) => t !== item));
-              }}
-            />
-          </div>
-        );
-      })}
+      <Tasks
+        tasks={filteredTasks}
+        onCheck={(item) => {
+          setTask(
+            tasks.map((t) => {
+              if (t === item) {
+                t.isCompleted = !t.isCompleted;
+              }
+              return t;
+            }),
+          );
+        }}
+        onDelete={(task) => {
+          setTask(tasks.filter((t) => t !== task));
+        }}
+      />
       <div className="stats">
         Total: {tasks.length} | In Progress:{" "}
         {tasks.filter((t) => !t.isCompleted).length} | Completed:{" "}
